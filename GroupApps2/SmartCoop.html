@@ -1,4 +1,3 @@
-<!--This is a comment-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +9,8 @@
 </head>
 <body class="bg-dark">
     <div id="divcontent" class="vh-100 d-flex justify-content-center align-items-center">
+
+        <!--Login Card-->
         <div class="card col-12 cold-md-5 col-lg-4 bg-dark border-light border-3 mb-3" id="divLogin" style="max-width: 540px;">
             <div class="row g-0">
               <div class="col-md-4">
@@ -35,6 +36,7 @@
             </div>
           </div>
 
+        <!--Registration Card-->
         <div class="card col-12 cold-md-6 col-lg-5 bg-dark border-light border-3 mb-3" id="divRegister" style="display:none;">
             <h2 class="col-12 text-center mt-2 mb-3 text-white mt-2">Register Account</h2>
             <form>
@@ -151,7 +153,13 @@
                 </div>
             </form>
         </div>
+
+        <!--Dashboard Card-->
+        <div id="divDashboard" style="display:none;">
+        </div>
     </div>
+
+    <!--Scripts-->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -167,6 +175,7 @@
                 $('#divRegister').slideDown()
             });
         })
+
     </script>
     <script>
         //SweetAlert for Login Card
@@ -178,7 +187,7 @@
 
             if(strUsername == ''){
                 blnError = true;
-                strErrorMessage += 'Username cannot be blank.  ';
+                strErrorMessage += 'Username cannot be blank. ';
             }
             if(strPassword == ''){
                 blnError = true;
@@ -190,6 +199,12 @@
                     title: 'Oops...',
                     text: strErrorMessage
                 })
+            }
+
+            if(blnError == false)
+            {
+                $('#divLogin').slideUp(function(){
+                $('#divDashbaord').slideDown()});
             }
         })
     </script>
@@ -208,58 +223,57 @@
             let strRegPhoneNumber = $('#txtRegPhoneNumber').val();
             let strRegCoopID = $('#txtRegCoopID').val();
 
-
             let blnError = false;
             let strErrorMessage = '';
 
             if(strRegEmail == ''){
                 blnError = true;
-                strErrorMessage += 'Email cannot be blank.  ';
+                strErrorMessage += ' Email cannot be blank. ';
             }
 
             if(strRegPassword == ''){
                 blnError = true;
-                strErrorMessage += 'Password cannot be blank.  ';
+                strErrorMessage += 'Password cannot be blank. ';
             }
 
             if(strRegFirstName == ''){
                 blnError = true;
-                strErrorMessage += 'First Name cannot be blank.  ';
+                strErrorMessage += 'First Name cannot be blank. ';
             }
 
             if(strRegLastName == ''){
                 blnError = true;
-                strErrorMessage += 'Last Name cannot be blank.  ';
+                strErrorMessage += 'Last Name cannot be blank. ';
             }
 
             if(strRegAddress1 == ''){
                 blnError = true;
-                strErrorMessage += 'Street address 1 cannot be blank.  ';
+                strErrorMessage += 'Street Adress cannot be blank. ';
             }
 
             if(strRegCity == ''){
                 blnError = true;
-                strErrorMessage += 'City cannot be blank.  ';
+                strErrorMessage += 'City cannot be blank. ';
             }
 
             if(strRegState == ''){
                 blnError = true;
-                strErrorMessage += 'State cannot be blank.  ';
+                strErrorMessage += 'State cannot be blank. ';
             }
 
             if(strRegZip == ''){
                 blnError = true;
-                strErrorMessage += 'Email cannot be blank.  ';
+                strErrorMessage += 'Zip Code cannot be blank. ';
             }
 
             if(strRegPhoneNumber == ''){
                 blnError = true;
-                strErrorMessage += 'Password cannot be blank.  ';
+                strErrorMessage += 'Phone Number cannot be blank. ';
             }
 
             if(strRegCoopID == ''){
                 blnError = true;
-                strErrorMessage += 'First Name cannot be blank.  ';
+                strErrorMessage += 'Coop ID cannot be blank. ';
             }
 
             if(blnError == true){
@@ -268,6 +282,11 @@
                     title: 'Sorry...',
                     text: strErrorMessage
                 })
+            }
+
+            if(blnError == false){
+                $('#divRegister').slideUp(function(){
+                $('#divLogin').slideDown()});
             }
         })
     </script>

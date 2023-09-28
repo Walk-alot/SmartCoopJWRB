@@ -178,26 +178,26 @@
         })
 
         //Login Card
-        $('#btnLogin').on('click', function(){
+        $('#btnLogin').on('click', function () {
             let strUsername = $('#txtLoginEmail').val();
             let strPassword = $('#txtLoginPassword').val();
             let blnError = false;
             let strErrorMessage = '';
 
-            if(strUsername == ''){
+            if (strUsername == '') {
                 blnError = true;
-                strErrorMessage += 'Username cannot be blank. ';
+                strErrorMessage += '<p> Username cannot be blank. </p>';
             }
-            if(strPassword == ''){
+            if (strPassword == '') {
                 blnError = true;
-                strErrorMessage += 'Password cannot be blank.  ';
+                strErrorMessage += '<p> Password cannot be blank. </p>';
             }
-            if(blnError == true){
+            if (blnError == true) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: strErrorMessage
-                })
+                    html: strErrorMessage
+                    });
             }
 
             if(blnError == false)
@@ -226,59 +226,59 @@
 
             if(strRegEmail == ''){
                 blnError = true;
-                strErrorMessage += 'Email cannot be blank. ';
+                strErrorMessage += '<p>Email cannot be blank. </p>';
             }
 
             if(strRegPassword == ''){
                 blnError = true;
-                strErrorMessage += 'Password cannot be blank. ';
+                strErrorMessage += '<p>Password cannot be blank. </p>';
             }
 
             if(strRegFirstName == ''){
                 blnError = true;
-                strErrorMessage += 'First Name cannot be blank. ';
+                strErrorMessage += '<p>First Name cannot be blank. </p>';
             }
 
             if(strRegLastName == ''){
                 blnError = true;
-                strErrorMessage += 'Last Name cannot be blank. ';
+                strErrorMessage += '<p>Last Name cannot be blank. </p>';
             }
 
             if(strRegAddress1 == ''){
                 blnError = true;
-                strErrorMessage += 'Street Adress cannot be blank. ';
+                strErrorMessage += '<p>Street Address cannot be blank. </p>';
             }
 
             if(strRegCity == ''){
                 blnError = true;
-                strErrorMessage += 'City cannot be blank. ';
+                strErrorMessage += '<p>City cannot be blank. </p>';
             }
 
             if(strRegState == ''){
                 blnError = true;
-                strErrorMessage += 'State cannot be blank. ';
+                strErrorMessage += '<p>State cannot be blank. </p>';
             }
 
             if(strRegZip == ''){
                 blnError = true;
-                strErrorMessage += 'Zip Code cannot be blank. ';
+                strErrorMessage += '<p>Zip Code cannot be blank. </p>';
             }
 
             if(strRegPhoneNumber == ''){
                 blnError = true;
-                strErrorMessage += 'Phone Number cannot be blank. ';
+                strErrorMessage += '<p>Phone Number cannot be blank. </p>';
             }
 
             if(strRegCoopID == ''){
                 blnError = true;
-                strErrorMessage += 'Coop ID cannot be blank. ';
+                strErrorMessage += '<p>Coop ID cannot be blank. </p>';
             }
 
             if(blnError == true){
                 Swal.fire({
                     icon: 'error',
                     title: 'Sorry...',
-                    text: strErrorMessage
+                    html: strErrorMessage
                 })
             }
 

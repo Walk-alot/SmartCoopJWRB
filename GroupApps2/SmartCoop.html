@@ -155,7 +155,94 @@
         </div>
 
         <!--Dashboard Card-->
-        <div id="divDashboard" style="display:none;">
+        <div class="container mt-5 mb-5" style="display:none">
+            <div class="card text-center">
+                <h1>Dashboard</h1>
+                <div class="card-header">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Home</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="clients-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Clients</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="visits" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Visits</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="inventory-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false">Inventory</button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-content" id="myTabContent">
+    
+                <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                    <div id="client_visits_graph">
+                        <canvas id="myChart" style="width:100%;max-width:700px" class=""></canvas>
+                    </div>
+                </div>
+    
+                <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                    <div class="card-body" id="DashClients">
+                        <h5 class="card-title">Client View</h5>
+                        <p class="card-text">You can either search our current client database, or choose create new client.</p>
+                        <button type="button" class="btn btn-primary" id="btnCreateClients">Create New Client</button>
+                        <button type="button" class="btn btn-secondary" id="btnViewClients">View Clients</button>
+    
+    
+                        <div id="divClientLookUp" style="display: none" class="mt-3 mb-2">
+                            <div class="card col-12">
+                                <div class="card-body">
+                                    <div class="col-12 d-flex justify-content-between flex-wrap">
+                                        <div class="card col-6">
+                                            <div class="card-header d-flex justify-content-center">
+                                                <h3><i class="bi bi-people-fill"></i> Client Lookup</h3>
+                                                <hr>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <form class="col-6">
+                                                        <label for="txtClientFirstName" class="form-label" aria-label="First Name">First Name</label>
+                                                        <input class="form-control mb-2" id="txtClientFirstName" placeholder="John" aria-label="Enter Client's First Name">
+                                                    </form>
+                                                    <form class="col-6">
+                                                        <label for="txtClientLastName" class="form-label" aria-label="Last Name">Last Name</label>
+                                                        <input class="form-control mb-2" id="txtClientLastName" placeholder="Doe" aria-label="Enter Client's Last Name">
+                                                    </form>
+                                                    <form>
+                                                        <label for="txtClientDOB" class="form-label" aria-label="Date Of Birth">Select Date</label>
+                                                        <input class="form-control mb-2" id="txtClientDOB" placeholder="DOB" type="date" aria-label="Enter Client's Date Of Birth">
+                                                        <label for="txtClientDL" class="form-label" aria-label="Driver's License Number">Driver's License Number</label>
+                                                        <input class="form-control mb-2" id="txtClientDL" placeholder="101915638" aria-label="Enter Client's Driver's License Number">
+                                                        <label for="txtClientEmail" class="form-label" aria-label="Client Email">Email</label>
+                                                        <input class="form-control mb-2" id="txtClientEmail" type="email"  placeholder="johnsmith@mail.com" aria-label="Enter Client's Email">
+                                                        <label for="txtClientStreetAddress" class="form-label" aria-label="Street Address">Street Address</label>
+                                                        <input class="form-control mb-2" id="txtClientStreetAddress" placeholder="150 First Street" aria-label="Enter Client's Street Address">
+                                                        <label for="txtClientCity" class="form-label" aria-label="Street Address">City</label>
+                                                        <input class="form-control mb-2" id="txtClientCity" placeholder="Cookeville" aria-label="Enter Client's City">
+                                                    </form>
+                                                    <form class="col-6"> 
+                                                        <label for="txtClientState" class="form-label" aria-label="State">State</label>
+                                                        <input class="form-control mb-2" id="txtClientState" placeholder="Please Select" aria-label="Enter Client's City">
+                                                    </form>
+                                                    <form class="col-6">
+                                                        <label for="txtClientZIP" class="form-label" aria-label="Zip Code">Zip Code</label>
+                                                        <input class="form-control mb-2" id="txtClientZIP" pattern="[0-9]{5}" placeholder="38501" aria-label="Enter Client's Zip Code">
+                                                    </form>
+                                                    <div>
+                                                        <button class="btn btn-primary col-12" id="btnSearchClient" >Search</button>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">Visits tab content goes here.</div>
+    
+                <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">Inventory tab content goes here.</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -287,6 +374,31 @@
                 $('#divLogin').slideDown()});
             }           
         })
+
+    </script>
+    <script>
+        var myTabEl = document.getElementById('myTab')
+        myTabEl.addEventListener('click', function (event) {
+            event.preventDefault()
+            var tabEl = event.target
+            if (tabEl.classList.contains('active')) {
+                return
+            }
+            var activeTabEl = myTabEl.querySelector('.active')
+            activeTabEl.classList.remove('active')
+            var activeTabPaneEl = document.querySelector(activeTabEl.getAttribute('href'))
+            activeTabPaneEl.classList.remove('show', 'active')
+            tabEl.classList.add('active')
+            var tabPaneEl = document.querySelector(tabEl.getAttribute('href'))
+            tabPaneEl.classList.add('show', 'active')
+        })
+
+        document.getElementById("btnViewClients").addEventListener("click", function() {
+            document.getElementById("divClientLookUp").style.display = "block";
+        });
+
+        // make a demo client visits graph 
+        var client_visits_graph = document.getElementById("client_visits_graph");
 
     </script>
 </body>

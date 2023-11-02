@@ -72,66 +72,7 @@
                   <div class="col-sm">
                     <div class="input-group">
                       <label class="input-group-text" for="txtRegState" aria-label="state">State</label>
-                      <select class="form-select" id="txtRegState">
-                        <option selected></option>
-                        <option value="1">AL</option>
-                        <option value="2">AK</option>
-                        <option value="3">AZ</option>
-                        <option value="4">AR</option>
-                        <option value="5">AS</option>
-                        <option value="6">CA</option>
-                        <option value="7">CO</option>
-                        <option value="8">CT</option>
-                        <option value="9">DE</option>
-                        <option value="10">DC</option>
-                        <option value="11">FL</option>
-                        <option value="12">GA</option>
-                        <option value="13">GU</option>
-                        <option value="14">HI</option>
-                        <option value="15">ID</option>
-                        <option value="16">IL</option>
-                        <option value="16">IN</option>
-                        <option value="17">IA</option>
-                        <option value="18">KS</option>
-                        <option value="18">KY</option>
-                        <option value="19">LA</option>
-                        <option value="20">ME</option>
-                        <option value="21">MD</option>
-                        <option value="22">MA</option>
-                        <option value="23">MI</option>
-                        <option value="24">MN</option>
-                        <option value="25">MS</option>
-                        <option value="26">MO</option>
-                        <option value="27">MT</option>
-                        <option value="28">NE</option>
-                        <option value="29">NV</option>
-                        <option value="30">NH</option>
-                        <option value="31">NJ</option>
-                        <option value="32">NM</option>
-                        <option value="33">NY</option>
-                        <option value="34">NC</option>
-                        <option value="35">ND</option>
-                        <option value="36">MP</option>
-                        <option value="37">OH</option>
-                        <option value="38">OK</option>
-                        <option value="39">OR</option>
-                        <option value="40">PA</option>
-                        <option value="41">PR</option>
-                        <option value="42">RI</option>
-                        <option value="43">SC</option>
-                        <option value="44">SD</option>
-                        <option value="45">TN</option>
-                        <option value="46">TX</option>
-                        <option value="47">TT</option>
-                        <option value="48">UT</option>
-                        <option value="49">VT</option>
-                        <option value="50">VA</option>
-                        <option value="51">VI</option>
-                        <option value="52">WA</option>
-                        <option value="53">WV</option>
-                        <option value="54">WI</option>
-                        <option value="55">WY</option>
-                      </select>
+                      <input type="text" id="txtRegState" class="form-control" placeholder="State" aria-label="State">
                     </div>
                   </div>
                   <div class="col-sm me-3">
@@ -155,7 +96,7 @@
         </div>
 
         <!--Dashboard Card-->
-        <div class="container mt-5 mb-5" style="display:none">
+        <div class="container mt-5 mb-5" style="display:none" id="divDashboard">
             <div class="card text-center">
                 <h1>Dashboard</h1>
                 <div class="card-header">
@@ -285,12 +226,15 @@
                     title: 'Oops...',
                     html: strErrorMessage
                     });
+            } else {
+                $('#divLogin').slideUp(function(){
+                $('#divDashboard').slideDown()});
             }
 
             if(blnError == false)
             {
                 $('#divLogin').slideUp(function(){
-                $('#divDashbaord').slideDown()});
+                $('#divDashboard').slideDown()});
             }
         })
 
@@ -377,29 +321,7 @@
 
     </script>
     <script>
-        var myTabEl = document.getElementById('myTab')
-        myTabEl.addEventListener('click', function (event) {
-            event.preventDefault()
-            var tabEl = event.target
-            if (tabEl.classList.contains('active')) {
-                return
-            }
-            var activeTabEl = myTabEl.querySelector('.active')
-            activeTabEl.classList.remove('active')
-            var activeTabPaneEl = document.querySelector(activeTabEl.getAttribute('href'))
-            activeTabPaneEl.classList.remove('show', 'active')
-            tabEl.classList.add('active')
-            var tabPaneEl = document.querySelector(tabEl.getAttribute('href'))
-            tabPaneEl.classList.add('show', 'active')
-        })
-
-        document.getElementById("btnViewClients").addEventListener("click", function() {
-            document.getElementById("divClientLookUp").style.display = "block";
-        });
-
-        // make a demo client visits graph 
-        var client_visits_graph = document.getElementById("client_visits_graph");
-
+        
     </script>
 </body>
 </html>

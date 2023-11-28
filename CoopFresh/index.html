@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheCoop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+</head>
+
+
+<body class="vh-100" style="background-image: url(./Pictures/beautiful-shot-chickens-grass-farm-sunny-day_181624-11060.jpg); background-repeat: no-repeat; background-size: cover;">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg shadow " style="background-color:#dbb6a3; margin-left: auto; margin-right: auto;" id="homeNavbar">
+        <div class="container-fluid d-lg-flex d-sm-inline-block justify-content-center">
+            <div class="col-lg-3 d-none d-md-flex">
+                <div>
+                    <img src="./Pictures/TheChickenCoop.png" width="60" height="60" class="d-inline-block align-text-center justify-content-center me-3 fs-2">
+                    <span class="fs-3 fw-medium text-light align-middle">The Cookeville Coop</span>
+                </div>
+            </div>
+
+            <div class="col-lg-3 d-lg-flex d-sm-block justify-content-end">
+                <button class="btn btn text-light mx-3 shadow" style="display:none; background-color: #8f5157" id="btnMyAccountToggle">My Account</button>
+                <button class="btn btn text-light mx-3 shadow" style="background-color: #8f5157" id="btnNavLogin">Login</button>
+                <button class="btn btn text-light mx-3 shadow" style="display:none; background-color: #8f5157" id="btnNavLogout">Log Out</button>
+            </div>
+        </div>
+    </nav>
+
+    <nav class="navbar navbar-expand-lg bg-dark" style="display:none" id="dashboardTopNavbar">
+        <div class="container-fluid d-lg-flex d-sm-inline-block justify-content-center">
+            <div class="col-12 d-flex justify-content-evenly">
+                <button class="btn btn-primary col-4 text-light mx-3" id="btnLogout">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Card -->
+    <div class="container mt-5" id="divLogin">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header text-light fw-medium" style="background-color: #dbb6a3;">
+                        Login
+                    </div>
+                    <div class="card-body bg-secondary-subtle rounded-bottom ">
+                        <form>
+                            <div class="mb-3">
+                                <label for="txtLoginEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="txtLoginEmail" placeholder="Enter your email" aria-label="email">
+                            </div>
+                            <div class="mb-3">
+                                <label for="txtLoginPassword" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="txtLoginPassword" placeholder="Enter your password" aria-label="password">
+                            </div>
+                            <button type="button" class="btn btn text-light mx-1 col-3 mx-auto" style="background-color: rgb(45, 187, 116);" id="btnLogin" aria-label="login button">Login</button>
+                            <button type="button" class="btn btn text-light mx-1 col-3 mx-auto" style="background-color: #8f5157;" id="btnToggleRegister" aria-label="register button">Register Account</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Card -->
+    <div class="container mt-3 mb-3 mx-auto" id="divRegister" style="display: none;">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header text-light fw-medium" style="background-color: #dbb6a3;">
+                        Register
+                    </div>
+                    <div class="card-body bg-secondary-subtle rounded-bottom">
+                        <form>
+                            <div class="mb-3">
+                                <label for="txtRegEmail" class="form-label">Email</label>
+                                <input class="form-control" id="txtRegEmail" type="email" placeholder="email" aria-label="email">
+                            </div>
+                            <div class="mb-3">
+                                <label for="txtRegPassword" class="form-label">Password</label>
+                                <input class="form-control" id="txtRegPassword" type="password" placeholder="Password" aria-label="password">
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <label for="txtRegFirstName" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="txtRegFirstName" placeholder="First name" aria-label="First name">
+                                </div>
+                                <div class="col">
+                                    <label for="txtRegLastName" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="txtRegLastName" placeholder="Last name" aria-label="Last name">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="txtRegAddress1" class="form-label">Address</label>
+                                <input class="form-control" id="txtRegAddress1" type="text" placeholder="Street Address 1" aria-label="address 1">
+                            </div>
+                            <div class="mb-3">
+                                <label for="txtRegAddress2" class="form-label">Address 2</label>
+                                <input class="form-control" id="txtRegAddress2" type="text" placeholder="Street Address 2" aria-label="address 2">
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <label for="txtRegCity" class="form-label">City</label>
+                                    <input type="text" id="txtRegCity" class="form-control" placeholder="City" aria-label="City">
+                                </div>
+                                <div class="col">
+                                    <label for="txtRegState" class="form-label">State</label>
+                                    <input type="text" id="txtRegState" class="form-control" placeholder="State" aria-label="State">
+                                </div>
+                                <div class="col">
+                                    <label for="txtRegZip" class="form-label">Zip</label>
+                                    <input type="text" id="txtRegZip" class="form-control" placeholder="Zip-code" aria-label="Zip">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn text-light mx-1 col-3 mt-3" style="background-color: rgb(45, 187, 116);" id="btnRegister" aria-label="register account button">Register</button>
+                                    <button type="button" class="btn btn text-light mx-1 col-3 mt-3" style="background-color: #8f5157;" id="btnToggleLogin" aria-label="go back to login button">Go Back</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Dashboard -->
+    <div class="container mb-2 col" style="display:none" id="Dashboard">
+        <div class="container col mt-5 justify-content-center">
+            <div class="row mt-5 mb-3">
+                <div class="col justify-content-center d-flex">
+                    <div class="justify-content-center card shadow">
+                        <div class="card-header text-light fw-medium" style="background-color:#dbb6a3">
+                            Manage Coop
+                        </div>
+                        <div class="card-body bg-secondary-subtle rounded-bottom ">
+                            <form class="">
+                                <button type="button" class="btn btn text-light mx-1" style="background-color:#8f5157" id="btnHomeDash">Home</button>
+                                <button type="button" class="btn btn text-light mx-1" style="background-color:#8f5157" id="btnDoorDash">Door</button>
+                                <button type="button" class="btn btn text-light mx-1" style="background-color:#8f5157" id="btnLightDash">Lights</button>
+                                <button type="button" class="btn btn text-light mx-1" style="background-color:#8f5157" id="btnACDash">AC</button>
+                                <button type="button" class="btn btn text-light mx-1" style="background-color:#8f5157" id="btnFoodWaterDash">Food/Water</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Home Dashboard -->
+        <div class="container col-12 mb-3" id="HomeDash" style="display: none">
+            <div class="justify-content-center card shadow">
+                <div class="card-header bg-secondary-light fw-medium">
+                    Home
+                </div>
+                <div class="card-body bg-secondary-subtle rounded-bottom ">
+                    <form class="">
+                        <table class="table table-hover mx-auto">
+                            <tr>
+                            <th class="text-light" style="background-color:#dbb6a3">Name</th>
+                            <th class="text-light" style="background-color:#dbb6a3">Creation Date</th>
+                            <th class="text-light" style="background-color:#dbb6a3">Details</th>
+                            <th class="text-light" style="background-color:#dbb6a3">Status</th>
+                            </tr>
+                            <tr>
+                            <td>John Doe</td>
+                            <td>2023/11/15</td>
+                            <td>
+                                <i class="bi bi-card-list fs-3"></i>
+                                <a href="">View</a>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success text-light mx-1" id="btnResearchProjects">Approve</button>
+                                <button type="button" class="btn btn-danger text-light mx-1" id="btnManageParticipants">Deny</button>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td>Jane Doe</td>
+                            <td>2023/11/15</td>
+                            <td>
+                                <i class="bi bi-card-list fs-3"></i>
+                                <a href="">View</a>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success text-light mx-1" id="btnResearchProjects">Approve</button>
+                                <button type="button" class="btn btn-danger text-light mx-1" id="btnManageParticipants">Deny</button>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td>Peter Jones</td>
+                            <td>2023/11/15</td>
+                            <td>
+                                <i class="bi bi-card-list fs-3"></i>
+                                <a href="">View</a>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success text-light mx-1" id="btnResearchProjects">Approve</button>
+                                <button type="button" class="btn btn-danger text-light mx-1" id="btnManageParticipants">Deny</button>
+                            </td>
+                            </tr>
+                            </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Door Dashboard -->
+        <div class="container col-12 mb-3" id="DoorDash" style="display: none">
+            <div class="justify-content-center card shadow">
+                <div class="card-header bg-secondary-light fw-medium">
+                    Door Operations
+                </div>
+                <div class="card-body bg-secondary-subtle rounded-bottom ">
+                    <form class="">
+                        <table class="table table-hover mx-auto">
+                            <tr>
+                            <th class="text-light" style="background-color:#dbb6a3">Name</th>
+                            <th class="text-light" style="background-color:#dbb6a3">Creation Date</th>
+                            <th class="text-light" style="background-color:#dbb6a3">Details</th>
+                            <th class="text-light" style="background-color:#dbb6a3">Status</th>
+                            </tr>
+                            <tr>
+                            <td>John Doe</td>
+                            <td>2023/11/15</td>
+                            <td>
+                                <i class="bi bi-card-list fs-3"></i>
+                                <a href="">View</a>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success text-light mx-1" id="btnResearchProjects">Approve</button>
+                                <button type="button" class="btn btn-danger text-light mx-1" id="btnManageParticipants">Deny</button>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td>Jane Doe</td>
+                            <td>2023/11/15</td>
+                            <td>
+                                <i class="bi bi-card-list fs-3"></i>
+                                <a href="">View</a>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success text-light mx-1" id="btnResearchProjects">Approve</button>
+                                <button type="button" class="btn btn-danger text-light mx-1" id="btnManageParticipants">Deny</button>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td>Peter Jones</td>
+                            <td>2023/11/15</td>
+                            <td>
+                                <i class="bi bi-card-list fs-3"></i>
+                                <a href="">View</a>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success text-light mx-1" id="btnResearchProjects">Approve</button>
+                                <button type="button" class="btn btn-danger text-light mx-1" id="btnManageParticipants">Deny</button>
+                            </td>
+                            </tr>
+                            </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Lights Dashboard -->
+        <div class="container col-12 mb-3" id="LightDash" style="display: none">
+            <div class="justify-content-center card shadow">
+                <div class="card-header bg-secondary-light fw-medium">
+                    Light Operations
+                </div>
+                <div class="card-body bg-secondary-subtle rounded-bottom ">
+                    <form class="">
+                        <table class="table table-hover mx-auto">
+                            <tr>
+                            <th class="text-light" style="background-color:#dbb6a3">Name</th>
+                            <th class="text-light" style="background-color:#dbb6a3">Creation Date</th>
+                            <th class="text-light" style="background-color:#dbb6a3">Details</th>
+                            <th class="text-light" style="background-color:#dbb6a3">Status</th>
+                            </tr>
+                            <tr>
+                            <td>John Doe</td>
+                            <td>2023/11/15</td>
+                            <td>
+                                <i class="bi bi-card-list fs-3"></i>
+                                <a href="">View</a>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success text-light mx-1" id="btnResearchProjects">Approve</button>
+                                <button type="button" class="btn btn-danger text-light mx-1" id="btnManageParticipants">Deny</button>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td>Jane Doe</td>
+                            <td>2023/11/15</td>
+                            <td>
+                                <i class="bi bi-card-list fs-3"></i>
+                                <a href="">View</a>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success text-light mx-1" id="btnResearchProjects">Approve</button>
+                                <button type="button" class="btn btn-danger text-light mx-1" id="btnManageParticipants">Deny</button>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td>Peter Jones</td>
+                            <td>2023/11/15</td>
+                            <td>
+                                <i class="bi bi-card-list fs-3"></i>
+                                <a href="">View</a>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success text-light mx-1" id="btnResearchProjects">Approve</button>
+                                <button type="button" class="btn btn-danger text-light mx-1" id="btnManageParticipants">Deny</button>
+                            </td>
+                            </tr>
+                            </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- AC Dashboard -->
+        <div class="container col-12 mb-3" id="ACDash" style="display: none">
+            <div class="justify-content-center card shadow">
+                <div class="card-header bg-secondary-light fw-medium">
+                    AC Operations
+                </div>
+                <div class="card-body bg-secondary-subtle rounded-bottom ">
+                    <form class="">
+                        <table class="table table-hover mx-auto">
+                            <tr>
+                            <th class="text-light" style="background-color:#dbb6a3">Name</th>
+                            <th class="text-light" style="background-color:#dbb6a3">Creation Date</th>
+                            <th class="text-light" style="background-color:#dbb6a3">Details</th>
+                            <th class="text-light" style="background-color:#dbb6a3">Status</th>
+                            </tr>
+                            <tr>
+                            <td>John Doe</td>
+                            <td>2023/11/15</td>
+                            <td>
+                                <i class="bi bi-card-list fs-3"></i>
+                                <a href="">View</a>
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn btn-secondary active">
+                                        <input type="radio" name="options" id="option1" checked> ON
+                                    </label>
+                                    <label class="btn btn-secondary">
+                                        <input type="radio" name="options" id="option2"> OFF
+                                    </label>
+                                </div>
+                            </td>
+                            </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Food/Water Dashboard -->
+        <div class="container col-12 mb-3" id="FoodWaterDash" style="display: none">
+            <div class="justify-content-center card shadow">
+                <div class="card-header bg-secondary-light fw-medium">
+                    Food/Water Alerts
+                </div>
+                <div class="card-body bg-secondary-subtle rounded-bottom ">
+                    <form class="">
+                        <table class="table table-hover mx-auto">
+                            <tr>
+                            <th class="text-light" style="background-color:#dbb6a3">Name</th>
+                            <th class="text-light" style="background-color:#dbb6a3">Creation Date</th>
+                            <th class="text-light" style="background-color:#dbb6a3">Details</th>
+                            <th class="text-light" style="background-color:#dbb6a3">Status</th>
+                            </tr>
+                            <tr>
+                            <td>John Doe</td>
+                            <td>2023/11/15</td>
+                            <td>
+                                <i class="bi bi-card-list fs-3"></i>
+                                <a href="">View</a>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success text-light mx-1" id="btnResearchProjects">Approve</button>
+                                <button type="button" class="btn btn-danger text-light mx-1" id="btnManageParticipants">Deny</button>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td>Jane Doe</td>
+                            <td>2023/11/15</td>
+                            <td>
+                                <i class="bi bi-card-list fs-3"></i>
+                                <a href="">View</a>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success text-light mx-1" id="btnResearchProjects">Approve</button>
+                                <button type="button" class="btn btn-danger text-light mx-1" id="btnManageParticipants">Deny</button>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td>Peter Jones</td>
+                            <td>2023/11/15</td>
+                            <td>
+                                <i class="bi bi-card-list fs-3"></i>
+                                <a href="">View</a>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success text-light mx-1" id="btnResearchProjects">Approve</button>
+                                <button type="button" class="btn btn-danger text-light mx-1" id="btnManageParticipants">Deny</button>
+                            </td>
+                            </tr>
+                            </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="./js/main.js"></script>
+</body>
+</html>

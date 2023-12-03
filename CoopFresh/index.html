@@ -38,7 +38,7 @@
     </nav>
 
     <!-- Login Card -->
-    <div class="container mt-5" id="divLogin">
+    <div class="container mt-4" id="divLogin">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card shadow">
@@ -113,6 +113,10 @@
                                     <label for="txtRegZip" class="form-label">Zip</label>
                                     <input type="text" id="txtRegZip" class="form-control" placeholder="Zip-code" aria-label="Zip">
                                 </div>
+                                <div class="mb-3 mt-3">
+                                    <label for="txtRegCoopID" class="form-label">Email</label>
+                                    <input class="form-control" id="txtRegCoopID" type="number" placeholder="CoopID" aria-label="CoopID">
+                                </div>
                                 <div>
                                     <button type="button" class="btn btn text-light mx-1 col-3 mt-3" style="background-color: rgb(45, 187, 116);" id="btnRegister" aria-label="register account button">Register</button>
                                     <button type="button" class="btn btn text-light mx-1 col-3 mt-3" style="background-color: #8f5157;" id="btnToggleLogin" aria-label="go back to login button">Go Back</button>
@@ -125,11 +129,17 @@
         </div>
     </div>
 
+    <!-- Weather Display -->
+    <div class="card row mt-3 col-3 mx-auto justify-content-center align-text-center text-light fw-medium " id="weatherInfo" style="display: none; background-color: #a3cadb; border-width: 4px; border-color: white;">
+        <h2>Loading...</h2>
+    </div>
+    
+    <!-- My Account -->
 
     <!-- Dashboard -->
-    <div class="container mb-2 col" style="display:none" id="Dashboard">
-        <div class="container col mt-5 justify-content-center">
-            <div class="row mt-5 mb-3">
+    <div class="container mb-2 col" style="display:none;" id="Dashboard">
+        <div class="container col mt-3 justify-content-center">
+            <div class="row mb-3">
                 <div class="col justify-content-center d-flex">
                     <div class="justify-content-center card shadow">
                         <div class="card-header text-light fw-medium" style="background-color:#dbb6a3">
@@ -150,58 +160,46 @@
         </div>
 
         <!-- Home Dashboard -->
-        <div class="container col-12 mb-3" id="HomeDash" style="display: none">
+        <div class="container col-4 mb-3" id="HomeDash" style="display: none;">
             <div class="justify-content-center card shadow">
                 <div class="card-header bg-secondary-light fw-medium">
                     Home
                 </div>
                 <div class="card-body bg-secondary-subtle rounded-bottom ">
-                    <form class="">
-                        <table class="table table-hover mx-auto">
-                            <tr>
-                            <th class="text-light" style="background-color:#dbb6a3">Name</th>
-                            <th class="text-light" style="background-color:#dbb6a3">Creation Date</th>
-                            <th class="text-light" style="background-color:#dbb6a3">Details</th>
-                            <th class="text-light" style="background-color:#dbb6a3">Status</th>
-                            </tr>
-                            <tr>
-                            <td>John Doe</td>
-                            <td>2023/11/15</td>
-                            <td>
-                                <i class="bi bi-card-list fs-3"></i>
-                                <a href="">View</a>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-success text-light mx-1" id="btnResearchProjects">Approve</button>
-                                <button type="button" class="btn btn-danger text-light mx-1" id="btnManageParticipants">Deny</button>
-                            </td>
-                            </tr>
-                            <tr>
-                            <td>Jane Doe</td>
-                            <td>2023/11/15</td>
-                            <td>
-                                <i class="bi bi-card-list fs-3"></i>
-                                <a href="">View</a>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-success text-light mx-1" id="btnResearchProjects">Approve</button>
-                                <button type="button" class="btn btn-danger text-light mx-1" id="btnManageParticipants">Deny</button>
-                            </td>
-                            </tr>
-                            <tr>
-                            <td>Peter Jones</td>
-                            <td>2023/11/15</td>
-                            <td>
-                                <i class="bi bi-card-list fs-3"></i>
-                                <a href="">View</a>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-success text-light mx-1" id="btnResearchProjects">Approve</button>
-                                <button type="button" class="btn btn-danger text-light mx-1" id="btnManageParticipants">Deny</button>
-                            </td>
-                            </tr>
-                            </table>
+                    <form id="chickenForm">
+                        <div class="form-group">
+                            <label for="numChickens">Number of Chickens that Lay Eggs:</label>
+                            <input type="number" class="form-control" id="numChickens" name="numChickens" required>
+                        </div>
+                
+                        <button type="button" class="btn btn-success" onclick="startEggCounter()">Calculate Eggs</button>
                     </form>
+                
+                    <div id="result" class="mt-3 font-weight-bold"></div>
+                
+                    <script>
+                        function startEggCounter() {
+                            var numChickens = document.getElementById('numChickens').value;
+                            var eggsPerChickenPerDay = 1; // You can adjust this value based on your chickens' productivity
+                            var daysToCollect = 7; // Adjust as needed
+                            var intervalSeconds = 1; // Interval between updates in seconds
+                
+                            var totalSeconds = 0;
+                
+                            // Update the result every 'intervalSeconds' seconds
+                            var intervalId = setInterval(function() {
+                                totalSeconds += intervalSeconds;
+                
+                                var estimatedEggs = numChickens * eggsPerChickenPerDay * (totalSeconds / (24 * 3600)); // Update based on time
+                                document.getElementById('result').innerHTML = "Estimated eggs ready to pick up: " + Math.floor(estimatedEggs) + " eggs";
+                
+                                // You can stop the counter after a certain duration, e.g., 60 seconds
+                                if (totalSeconds >= 60) {
+                                    clearInterval(intervalId);
+                                }
+                            }, intervalSeconds * 1000);
+                        }
+                    </script>
                 </div>
             </div>
         </div>
@@ -283,6 +281,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="./js/main.js"></script>
+
+
 </body>
 </html>

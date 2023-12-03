@@ -190,7 +190,7 @@ $('#btnRegister').click(function(){
 
 // Dashboards
      // Function to update the clock
-     function updateClock() {
+    function updateClock() {
         const clockElement = document.getElementById('clock');
         const now = new Date();
         const timeString = now.toLocaleTimeString();

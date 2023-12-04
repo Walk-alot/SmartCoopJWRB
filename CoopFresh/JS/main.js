@@ -189,66 +189,123 @@ $('#btnRegister').click(function(){
 })
 
 // Dashboards
-     // Function to update the clock
-    function updateClock() {
-        const clockElement = document.getElementById('clock');
-        const now = new Date();
-        const timeString = now.toLocaleTimeString();
-        const timeZoneString = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        clockElement.textContent = `Current Time: ${timeString} (${timeZoneString})`;
-      }
-  
-      // Door Control Functions
-      function openDoor() {
-        document.getElementById('doorStatus').textContent = 'The door is manually opened.';
-      }
-  
-      function closeDoor() {
-        document.getElementById('doorStatus').textContent = 'The door is manually closed.';
-      }
-  
-      function toggleDoorAutomatic() {
-        const doorStatusElement = document.getElementById('doorStatus');
-        const doorButtons = document.getElementById('doorButtons');
-        const currentHour = new Date().getHours();
-        const isDaytime = currentHour >= 6 && currentHour < 18;
-  
-        if (doorStatusElement.dataset.mode === 'automatic') {
-          doorStatusElement.dataset.mode = 'manual';
-          doorStatusElement.textContent = 'Switched to manual mode.';
-          doorButtons.style.display = 'block';
-        } else {
-          doorStatusElement.dataset.mode = 'automatic';
-          doorStatusElement.textContent = isDaytime ? 'It\'s daytime, the door is open.' : 'It\'s nighttime, the door is closed.';
-          doorButtons.style.display = 'none';
-        }
-      }
-  
-      // Light Control Functions
-      function turnOnLights() {
-        document.getElementById('lightStatus').textContent = 'The lights are manually turned on.';
-      }
-  
-      function turnOffLights() {
-        document.getElementById('lightStatus').textContent = 'The lights are manually turned off.';
-      }
-  
-      function toggleLightAutomatic() {
-        const lightStatusElement = document.getElementById('lightStatus');
-        const lightButtons = document.getElementById('lightButtons');
-        const currentHour = new Date().getHours();
-        const isDaytime = currentHour >= 6 && currentHour < 18;
-  
-        if (lightStatusElement.dataset.mode === 'automatic') {
-          lightStatusElement.dataset.mode = 'manual';
-          lightStatusElement.textContent = 'Switched to manual mode.';
-          lightButtons.style.display = 'block';
-        } else {
-          lightStatusElement.dataset.mode = 'automatic';
-          lightStatusElement.textContent = isDaytime ? 'It\'s daytime, the lights are off.' : 'It\'s nighttime, the lights are on.';
-          lightButtons.style.display = 'none';
-        }
-      }
+
+
+// Weather Display
+async function getWeather() {
+  const apiKey = '434cfb936758e07ed174697f92432b11';
+  const city = 'cookeville';
+  const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
+
+  try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      displayWeather(data);
+  } catch (error) {
+      console.error('Error fetching weather data:', error);
+      displayWeatherError();
+  }
+}
+
+function displayWeather(weatherData) {
+  const city = weatherData.name;
+  const temperature = weatherData.main.temp;
+  const weatherDescription = weatherData.weather[0].description;
+  const timestamp = weatherData.dt;
+  const time = new Date(timestamp * 1000).toLocaleTimeString();
+
+  const weatherInfo = `
+      <h2>Weather in ${city}</h2>
+      <p>Description: <label class="text-uppercase">${weatherDescription}</label></p>
+      <p>Temperature: ${temperature} °F</p>
+      <p>Time: ${time}</p>
+  `;
+
+  document.getElementById('weatherInfo').innerHTML = weatherInfo;
+}
+
+function displayWeatherError() {
+  document.getElementById('weatherInfo').innerHTML = '<h2>Failed to fetch weather data.</h2>';
+}
+
+// Function to update the clock
+function updateClock() {
+  const clockElement = document.getElementById('clock');
+  const now = new Date();
+  const timeString = now.toLocaleTimeString();
+  const timeZoneString = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  clockElement.textContent = `Current Time: ${timeString} (${timeZoneString})`;
+}
+
+// Door Control Functions
+function openDoor() {
+  document.getElementById('doorStatus').textContent = 'The door is manually opened.';
+}
+
+function closeDoor() {
+  document.getElementById('doorStatus').textContent = 'The door is manually closed.';
+}
+
+function toggleDoorAutomatic() {
+  const doorStatusElement = document.getElementById('doorStatus');
+  const doorButtons = document.getElementById('doorButtons');
+  const currentHour = new Date().getHours();
+  const isDaytime = currentHour >= 6 && currentHour < 18;
+
+  if (doorStatusElement.dataset.mode === 'automatic') {
+      doorStatusElement.dataset.mode = 'manual';
+      doorStatusElement.textContent = 'Switched to manual mode.';
+      doorButtons.style.display = 'block';
+  } else {
+      doorStatusElement.dataset.mode = 'automatic';
+      doorStatusElement.textContent = isDaytime ? 'It\'s daytime, the door is open.' : 'It\'s nighttime, the door is closed.';
+      doorButtons.style.display = 'none';
+  }
+
+  // Call the updateClock function when the door mode is toggled
+  updateClock();
+}
+
+// Fetch weather data initially
+getWeather();
+
+// Update weather data every 10 minutes (600,000 milliseconds)
+setInterval(getWeather, 600000);
+
+// Fetch weather data when the page loads
+document.addEventListener('DOMContentLoaded', getWeather);
+
+// Update the clock every second (1000 milliseconds)
+setInterval(updateClock, 1000);
+
+console.log('Weather last updated at:', new Date());
+// End Weather Display
+
+// Light Control Functions
+function turnOnLights() {
+  document.getElementById('lightStatus').textContent = 'The lights are manually turned on.';
+}
+
+function turnOffLights() {
+  document.getElementById('lightStatus').textContent = 'The lights are manually turned off.';
+}
+
+function toggleLightAutomatic() {
+  const lightStatusElement = document.getElementById('lightStatus');
+  const lightButtons = document.getElementById('lightButtons');
+  const currentHour = new Date().getHours();
+  const isDaytime = currentHour >= 6 && currentHour < 18;
+
+  if (lightStatusElement.dataset.mode === 'automatic') {
+    lightStatusElement.dataset.mode = 'manual';
+    lightStatusElement.textContent = 'Switched to manual mode.';
+    lightButtons.style.display = 'block';
+  } else {
+    lightStatusElement.dataset.mode = 'automatic';
+    lightStatusElement.textContent = isDaytime ? 'It\'s daytime, the lights are off.' : 'It\'s nighttime, the lights are on.';
+    lightButtons.style.display = 'none';
+  }
+}
   
       // Food and Water Distribution Functions
       let foodPercentage = 100; // Initial food percentage
@@ -349,57 +406,85 @@ $('#btnRegister').click(function(){
       updateFoodStatusBar();
       
 
-// Egg Counter
+// AC Control Functions
 
-// Weather Display
+// Function to get temperature from OpenWeatherMap API
+async function getTemperature() {
+  const apiUrl = 'your_temperature_api_url'; // replace with your actual temperature API endpoint
+  try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      const temperature = data.main.temp;
 
-async function getWeather() {
-    const apiKey = '434cfb936758e07ed174697f92432b11';
-    const city = 'cookeville';
+      // Update the temperature display
+      document.getElementById('temperature').innerHTML = `Current Temperature: ${temperature} °F`;
 
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
+      // Automatically control the heater and fan based on temperature (adjust the threshold as needed)
+      if (temperature > 75) {
+          turnOnFan();
+      } else {
+          turnOffFan();
+      }
 
-    try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-        displayWeather(data);
-    } catch (error) {
-        console.error('Error fetching weather data:', error);
-        displayWeatherError();
-    }
+      if (temperature < 60) {
+          turnOnHeater();
+      } else {
+          turnOffHeater();
+      }
+  } catch (error) {
+      console.error('Error fetching temperature:', error);
+  }
 }
 
-function displayWeather(weatherData) {
-    const city = weatherData.name;
-    const temperature = weatherData.main.temp;
-    const weatherDescription = weatherData.weather[0].description;
-    const timestamp = weatherData.dt;
-    const time = new Date(timestamp * 1000).toLocaleTimeString();
-
-    const weatherInfo = `
-        <h2>Weather in ${city}</h2>
-        <p>Description: <label class="text-uppercase">${weatherDescription}</label></p>
-        <p>Temperature: ${temperature} °F</p>
-        <p>Time: ${time}</p>
-    `;
-
-    document.getElementById('weatherInfo').innerHTML = weatherInfo;
-
-    console.log('Displaying weather...');
+// Function to toggle the heater
+function toggleHeaterAutomatic() {
+  // Add logic to toggle automatic mode for the heater
+  const heaterStatus = document.getElementById('HeaterStatus');
+  heaterStatus.value = heaterStatus.value === 'Automatic Mode' ? 'Manual Mode' : 'Automatic Mode';
 }
 
-function displayWeatherError() {
-    document.getElementById('weatherInfo').innerHTML = '<h2>Failed to fetch weather data.</h2>';
+// Function to toggle the fan
+function toggleFanAutomatic() {
+  // Add logic to toggle automatic mode for the fan
+  const fanStatus = document.getElementById('FanStatus');
+  fanStatus.value = fanStatus.value === 'Automatic Mode' ? 'Manual Mode' : 'Automatic Mode';
 }
 
-// Fetch weather data initially
-getWeather();
+// Function to turn on the heater
+function turnOnHeater() {
+  document.getElementById('HeaterStatus').value = 'Heater is On';
+  // Add logic to turn on the heater (e.g., send a signal to a hardware device)
+}
 
-// Update weather data every 10 minutes (600,000 milliseconds)
-setInterval(getWeather, 10000)
-    
-// Fetch weather data when the page loads
-document.addEventListener('DOMContentLoaded', getWeather);
+// Function to turn off the heater
+function turnOffHeater() {
+  document.getElementById('HeaterStatus').value = 'Heater is Off';
+  // Add logic to turn off the heater (e.g., send a signal to a hardware device)
+}
 
-console.log('Weather last updated at:', new Date());
-// End Weather Display
+// Function to toggle the fan
+function toggleFan() {
+  const fanStatus = document.getElementById('FanStatus');
+  if (fanStatus.value === 'Fan is On') {
+      turnOffFan();
+  } else {
+      turnOnFan();
+  }
+}
+
+// Function to turn on the fan
+function turnOnFan() {
+  document.getElementById('FanStatus').value = 'Fan is On';
+  // Add logic to turn on the fan (e.g., send a signal to a hardware device)
+}
+
+// Function to turn off the fan
+function turnOffFan() {
+  document.getElementById('FanStatus').value = 'Fan is Off';
+  // Add logic to turn off the fan (e.g., send a signal to a hardware device)
+}
+
+// Fetch temperature on page load
+getTemperature();
+// Fetch temperature every 5 minutes (adjust the interval as needed)
+setInterval(getTemperature, 300000);

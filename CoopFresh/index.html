@@ -205,7 +205,7 @@
         </div>
 
         <!-- Door Dashboard -->
-        <div class="container col-12 mb-3" id="DoorDash">
+        <div class="container col-12 mb-3" id="DoorDash" style="display: none;">
             <div class="justify-content-center card shadow">
             <div class="card-header bg-secondary-light fw-medium">
                 Door Operations
@@ -227,7 +227,7 @@
         </div>
 
         <!-- Light Dashboard -->
-        <div class="container col-12 mb-3" id="LightDash">
+        <div class="container col-12 mb-3" id="LightDash" style="display: none;">
             <div class="justify-content-center card shadow">
             <div class="card-header bg-secondary-light fw-medium">
                 Light Operations
@@ -248,8 +248,44 @@
             </div>
         </div>
 
+        <!-- Fan and Heater Dashboard -->
+        <div class="container mb-3" id="ACDash" style="display: none;">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card shadow mb-3">
+                        <div class="card-header bg-secondary-light fw-medium">
+                            Heater Operations
+                        </div>
+                        <div class="card-body bg-secondary-subtle rounded-bottom">
+                            <input type="text" id="HeaterStatus" class="form-control mb-3" readonly />
+                            <div id="HeaterButtons" class="mt-3">
+                                <button class="btn btn-success" onclick="turnOnHeater()">Turn On Heater</button>
+                                <button class="btn btn-danger" onclick="turnOffHeater()">Turn Off Heater</button>
+                                <button class="btn btn-primary" onclick="toggleHeaterAutomatic()">Toggle Automatic</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card shadow mb-3">
+                        <div class="card-header bg-secondary-light fw-medium">
+                            Fan Operations
+                        </div>
+                        <div class="card-body bg-secondary-subtle rounded-bottom">
+                            <input type="text" id="FanStatus" class="form-control mb-3" readonly />
+                            <div id="FanButtons" class="mt-3">
+                                <button class="btn btn-success" onclick="turnOnFan()">Turn On Fan</button>
+                                <button class="btn btn-danger" onclick="turnOffFan()">Turn Off Fan</button>
+                                <button class="btn btn-primary" onclick="toggleFanAutomatic()">Toggle Automatic</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Food and Water Dashboard -->
-        <div class="container col-12 mb-3" id="FoodWaterDash">
+        <div class="container col-12 mb-3" id="FoodWaterDash" style="display: none;">
             <div class="justify-content-center card shadow">
             <div class="card-header bg-secondary-light fw-medium">
                 Food and Water Distribution

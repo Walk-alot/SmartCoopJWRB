@@ -15,6 +15,10 @@ $('#btnNavLogin').click(function(){
 })
 
 $('#btnNavLogout').click(function(){
+    
+
+
+
     $('#btnMyAccountToggle').hide()
     $('#btnNavLogout').hide()
     $('#btnNavLogin').show()
@@ -103,7 +107,7 @@ $('#btnLogin').click(function () {
           html: sessionResult.Error,
         });
       } else {
-        sessionStorage.setItem('CoopID', sessionResult.CoopSessionID);
+        sessionStorage.setItem('CoopID', sessionResult.CoopID);
         $('#divLogin').slideUp()
         $('#Dashboard').slideDown()
         $('#btnMyAccountToggle').show()

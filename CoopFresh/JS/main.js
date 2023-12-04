@@ -1,3 +1,21 @@
+
+// API
+
+// Function to get a CoopID by making a POST request to coop.php
+async function getCoopID() {
+  const response = await fetch('https://simplecoop.swollenhippo.com/coop.php', {
+      method: 'POST'
+  });
+
+  const data = await response.json();
+  const coopID = data.CoopID;
+
+  return coopID;
+}
+// End API
+
+
+
 $('#btnToggleRegister').click(function(){
     $('#divLogin').slideUp()
     $('#divRegister').slideDown()
@@ -15,10 +33,6 @@ $('#btnNavLogin').click(function(){
 })
 
 $('#btnNavLogout').click(function(){
-    
-
-
-
     $('#btnMyAccountToggle').hide()
     $('#btnNavLogout').hide()
     $('#btnNavLogin').show()
@@ -107,7 +121,7 @@ $('#btnLogin').click(function () {
           html: sessionResult.Error,
         });
       } else {
-        sessionStorage.setItem('CoopID', sessionResult.CoopID);
+        sessionStorage.setItem('CoopID', sessionResult.CoopSessionID);
         $('#divLogin').slideUp()
         $('#Dashboard').slideDown()
         $('#btnMyAccountToggle').show()
@@ -371,7 +385,7 @@ function toggleLightAutomatic() {
 
       function giveOutFoodWater() {
         document.getElementById('foodWaterStatus').textContent = 'Food and water have been manually given out.';
-        increaseFoodPercentage(10); // Increase food percentage by 10%
+        increaseFoodPercentage(10); // Increase food percentage by 1%
       }
   
       function toggleFoodWaterAutomatic() {

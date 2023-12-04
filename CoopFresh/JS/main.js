@@ -367,7 +367,7 @@ function toggleLightAutomatic() {
 
       function giveOutFoodWater() {
         document.getElementById('foodWaterStatus').textContent = 'Food and water have been manually given out.';
-        increaseFoodPercentage(10); // Increase food percentage by 1%
+        increaseFoodPercentage(10); // Increase food percentage by 10%
       }
   
       function toggleFoodWaterAutomatic() {

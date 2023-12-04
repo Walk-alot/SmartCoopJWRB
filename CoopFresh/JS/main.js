@@ -76,32 +76,44 @@ $('#btnLogin').click(function () {
     let blnError = false;
     let strErrorMessage = '';
 
-    if (strUsername == '') {
+    if (strUsername < 6) {
         blnError = true;
         strErrorMessage += '<p> Email cannot be blank. </p>';
     }
-    if (strPassword == '') {
+    if (strPassword < 8) {
         blnError = true;
-        strErrorMessage += '<p> Password cannot be blank. </p>';
+        strErrorMessage += '<p> Password needs to be 8 or more. </p>';
     }
     if (blnError == true) {
         Swal.fire({
             icon: 'error',
-            title: 'Oops...',
+            title: 'Login Credentials Error',
             html: strErrorMessage
             });
     }
 
     if(blnError == false)
     {
+      $.post('https://simplecoop.swollenhippo.com/sessions.php', { Email: 'bburchfield2@tntech.edu', Password: 'Mickey2022!' }, function (sessionResult) {
+      console.log(sessionResult);
+      sessionResult = JSON.parse(sessionResult);
+      if (sessionResult.Error) {
+        Swal.fire({
+          icon: 'error',
+          html: sessionResult.Error,
+        });
+      } else {
+        sessionStorage.setItem('CoopID', sessionResult.CoopSessionID);
         $('#divLogin').slideUp()
         $('#Dashboard').slideDown()
         $('#btnMyAccountToggle').show()
         $('#btnNavLogout').show()
         $('#btnNavLogin').hide()
         $('#weatherInfo').show()
-    }
-})
+        }
+    })
+  }
+});
 
 //Register Card
 $('#btnRegister').click(function(){
@@ -120,12 +132,12 @@ $('#btnRegister').click(function(){
     let blnError = false;
     let strErrorMessage = '';
 
-    if(strRegEmail == ''){
+    if(strRegEmail.length < 6){
         blnError = true;
         strErrorMessage += '<p>Email cannot be blank. </p>';
     }
 
-    if(strRegPassword == ''){
+    if(strRegPassword < 8){
         blnError = true;
         strErrorMessage += '<p>Password cannot be blank. </p>';
     }
@@ -140,7 +152,7 @@ $('#btnRegister').click(function(){
         strErrorMessage += '<p>Last Name cannot be blank. </p>';
     }
 
-    if(strRegAddress1 == ''){
+    if(strRegAddress1 < 4){
         blnError = true;
         strErrorMessage += '<p>Street Address cannot be blank. </p>';
     }
@@ -155,17 +167,17 @@ $('#btnRegister').click(function(){
         strErrorMessage += '<p>State cannot be blank. </p>';
     }
 
-    if(strRegZip == ''){
+    if(strRegZip < 5){
         blnError = true;
         strErrorMessage += '<p>Zip Code cannot be blank. </p>';
     }
 
-    if(strRegPhoneNumber == ''){
+    if(strRegPhoneNumber < 10){
         blnError = true;
         strErrorMessage += '<p>Phone Number cannot be blank. </p>';
     }
 
-    if(strRegCoopID == ''){
+    if(strRegCoopID < 6){
         blnError = true;
         strErrorMessage += '<p>Coop ID cannot be blank. </p>';
     }
@@ -173,18 +185,61 @@ $('#btnRegister').click(function(){
     if(blnError == true){
         Swal.fire({
             icon: 'error',
-            title: 'Sorry...',
+            title: 'Registration Error',
             html: strErrorMessage
         })
     }
 
     if(blnError == false){
-        $('#divRegister').slideUp()
-        $('#Dashboard').slideDown()
-        $('#btnMyAccountToggle').show()
-        $('#btnNavLogout').show()
-        $('#btnNavLogin').hide()
-        $('#weatherInfo').show()
+
+      $.post('https://simplecoop.swollenhippo.com/coop.php', function (coopResult) {
+      console.log(coopResult);
+      coopResult = JSON.parse(coopResult);
+      if (coopResult.Error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Coop ID Error',
+          html: coopResult.Error,
+        });
+      } else {
+        $.post('https://simplecoop.swollenhippo.com/users.php', { Email: 'bburchfield2@tntech.edu', Password: 'Mickey2022!', FirstName: 'Bennn', LastName: 'BURCHFIELD', CoopID: '65' }, function (result) {
+          console.log(result);
+          result = JSON.parse(result);
+          if (result.Error) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Create Account Error',
+              html: result.Error,
+            });
+          } else {
+            $.post('https://simplecoop.swollenhippo.com/sessions.php', { Email: 'bburchfield2@tntech.edu', Password: 'Mickey2022!' }, function (sessionResult) {
+              console.log(sessionResult);
+              sessionResult = JSON.parse(sessionResult);
+              if (sessionResult.Error) {
+                Swal.fire({
+                  icon: 'error',
+                  html: sessionResult.Error,
+                });
+              } else {
+                sessionStorage.setItem('CoopID', sessionResult.CoopID);
+
+                $('#divRegister').slideUp()
+                $('#Dashboard').slideDown()
+                $('#btnMyAccountToggle').show()
+                $('#btnNavLogout').show()
+                $('#btnNavLogin').hide()
+                $('#weatherInfo').show()
+
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Account Creation Successful',
+                });
+              }
+            });
+          }
+        });
+      }
+    });
     }           
 })
 

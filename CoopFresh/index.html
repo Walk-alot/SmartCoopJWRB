@@ -114,7 +114,7 @@
                                     <input type="text" id="txtRegZip" class="form-control" placeholder="Zip-code" aria-label="Zip">
                                 </div>
                                 <div class="mb-3 mt-3">
-                                    <label for="txtRegCoopID" class="form-label">Email</label>
+                                    <label for="txtRegCoopID" class="form-label">CoopID</label>
                                     <input class="form-control" id="txtRegCoopID" type="number" placeholder="CoopID" aria-label="CoopID">
                                 </div>
                                 <div>
@@ -190,11 +190,11 @@
                             var intervalId = setInterval(function() {
                                 totalSeconds += intervalSeconds;
                 
-                                var estimatedEggs = numChickens * eggsPerChickenPerDay * (totalSeconds / (24 * 3600)); // Update based on time
-                                document.getElementById('result').innerHTML = "Estimated eggs ready to pick up: " + Math.floor(estimatedEggs) + " eggs";
+                                var estimatedEggs = numChickens * eggsPerChickenPerDay * (totalSeconds / (1 * 60)); // Update based on time
+                                document.getElementById('result').innerHTML = "Estimated eggs ready to pick up in the next hour: " + Math.floor(estimatedEggs) + " eggs";
                 
                                 // You can stop the counter after a certain duration, e.g., 60 seconds
-                                if (totalSeconds >= 60) {
+                                if (totalSeconds >= 20) {
                                     clearInterval(intervalId);
                                 }
                             }, intervalSeconds * 1000);

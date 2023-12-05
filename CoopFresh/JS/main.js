@@ -78,11 +78,11 @@ $('#btnLogin').click(function () {
     let blnError = false;
     let strErrorMessage = '';
 
-    if (strUsername < 6) {
+    if (strUsername.length === 0 || !strUsername.includes('@')) {
         blnError = true;
-        strErrorMessage += '<p> Email cannot be blank. </p>';
+        strErrorMessage += '<p> Invalid Email. </p>';
     }
-    if (strPassword < 8) {
+    if (strPassword.length < 8) {
         blnError = true;
         strErrorMessage += '<p> Password needs to be 8 or more. </p>';
     }
@@ -134,14 +134,14 @@ $('#btnRegister').click(function(){
     let blnError = false;
     let strErrorMessage = '';
 
-    if(strRegEmail.length < 6){
+    if(strRegEmail = ' ' || !strRegEmail.includes('@')){
         blnError = true;
-        strErrorMessage += '<p>Email cannot be blank. </p>';
+        strErrorMessage += '<p>Invalid Email. </p>';
     }
 
-    if(strRegPassword < 8){
+    if(strRegPassword.length < 8){
         blnError = true;
-        strErrorMessage += '<p>Password cannot be blank. </p>';
+        strErrorMessage += '<p>Password must be 8 characters or more. </p>';
     }
 
     if(strRegFirstName == ''){
@@ -154,7 +154,12 @@ $('#btnRegister').click(function(){
         strErrorMessage += '<p>Last Name cannot be blank. </p>';
     }
 
-    if(strRegAddress1 < 4){
+    if(strRegPhoneNumber.length < 10){
+      blnError = true;
+      strErrorMessage += '<p>Invalid Phone Number. </p>';
+  }
+
+    if(strRegAddress1.length < 1){
         blnError = true;
         strErrorMessage += '<p>Street Address cannot be blank. </p>';
     }
@@ -169,17 +174,12 @@ $('#btnRegister').click(function(){
         strErrorMessage += '<p>State cannot be blank. </p>';
     }
 
-    if(strRegZip < 5){
+    if(strRegZip.length < 5){
         blnError = true;
-        strErrorMessage += '<p>Zip Code cannot be blank. </p>';
+        strErrorMessage += '<p>Invalid Zip Code. </p>';
     }
 
-    if(strRegPhoneNumber < 10){
-        blnError = true;
-        strErrorMessage += '<p>Phone Number cannot be blank. </p>';
-    }
-
-    if(strRegCoopID < 6){
+    if(strRegCoopID = ''){
         blnError = true;
         strErrorMessage += '<p>Coop ID cannot be blank. </p>';
     }

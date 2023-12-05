@@ -312,13 +312,61 @@ function updateClock() {
   clockElement.textContent = `Current Time: ${timeString} (${timeZoneString})`;
 }
 
+// Eggs
+
+function startEggCounter() {
+  var numChickens = document.getElementById('numChickens').value;
+  var eggsPerChickenPerDay = 1; // You can adjust this value based on your chickens' productivity
+  var daysToCollect = 7; // Adjust as needed
+  var intervalSeconds = 1; // Interval between updates in seconds
+
+  var totalSeconds = 0;
+
+  // Update the result every 'intervalSeconds' seconds
+  var intervalId = setInterval(function () {
+    totalSeconds += intervalSeconds;
+
+    var estimatedEggs = numChickens * eggsPerChickenPerDay * (totalSeconds / (1 * 60)); // Update based on time
+    document.getElementById('result').innerHTML =
+      "Estimated eggs ready to pick up in the next hour: " + Math.floor(estimatedEggs) + " eggs";
+
+    // Add API call logic to update egg count
+    updateEggCount(Math.floor(estimatedEggs));
+
+    // You can stop the counter after a certain duration, e.g., 60 seconds
+    if (totalSeconds >= 20) {
+      clearInterval(intervalId);
+    }
+  }, intervalSeconds * 1000);
+}
+
+// Function to update egg count via API call
+function updateEggCount(eggCount) {
+  $.ajax({
+    url: 'https://simplecoop.swollenhippo.com/eggs.php',
+    type: 'PUT',
+    data: { SessionID: sessionStorage.getItem('CoopSessionID'), eggCount: eggCount },
+    success: function (response) {
+      console.log('Egg count updated successfully');
+      console.log(response);
+    },
+    error: function (error) {
+      console.error('Error updating egg count:', error);
+    },
+  });
+}
+
 // Door Control Functions
 function openDoor() {
   document.getElementById('doorStatus').textContent = 'The door is manually opened.';
+
+  updateDoorStatus(true);
 }
 
 function closeDoor() {
   document.getElementById('doorStatus').textContent = 'The door is manually closed.';
+
+  updateDoorStatus(false);
 }
 
 function toggleDoorAutomatic() {
@@ -337,8 +385,45 @@ function toggleDoorAutomatic() {
       doorButtons.style.display = 'none';
   }
 
-  // Call the updateClock function when the door mode is toggled
-  updateClock();
+  // Add API call logic to update door mode
+  updateDoorMode(doorStatusElement.dataset.mode);
+}
+
+// Function to update door status via API call
+function updateDoorStatus(isOpen) {
+  $.ajax({
+    url: 'https://simplecoop.swollenhippo.com/settings.php',
+    type: 'PUT',
+    data: { isOpen: isOpen },
+    success: function (response) {
+      console.log('Door status updated successfully');
+      console.log(response);
+    },
+    error: function (error) {
+      console.error('Error updating door status:', error);
+    },
+  });
+}
+
+// Function to update door mode via API call
+function updateDoorMode(mode) {
+  $.ajax({
+    url: 'https://simplecoop.swollenhippo.com/settings.php',
+    type: 'PUT',
+    data: { mode: mode },
+    success: function (response) {
+      console.log('Door mode updated successfully');
+      console.log(response);
+    },
+    error: function (error) {
+      console.error('Error updating door mode:', error);
+    },
+  });
+}
+
+// Function to update the clock
+function updateClock() {
+  // Add your clock update logic here
 }
 
 // Fetch weather data initially
@@ -359,10 +444,14 @@ console.log('Weather last updated at:', new Date());
 // Light Control Functions
 function turnOnLights() {
   document.getElementById('lightStatus').textContent = 'The lights are manually turned on.';
+
+  updateLightStatus(true);
 }
 
 function turnOffLights() {
   document.getElementById('lightStatus').textContent = 'The lights are manually turned off.';
+
+  updateLightStatus(false);
 }
 
 function toggleLightAutomatic() {
@@ -380,112 +469,185 @@ function toggleLightAutomatic() {
     lightStatusElement.textContent = isDaytime ? 'It\'s daytime, the lights are off.' : 'It\'s nighttime, the lights are on.';
     lightButtons.style.display = 'none';
   }
+
+  updateLightMode(lightStatusElement.dataset.mode);
+}
+
+// Function to update light status via API call
+function updateLightsStatus(isOn) {
+  $.ajax({
+    url: 'https://simplecoop.swollenhippo.com/settings.php',
+    type: 'PUT',
+    data: { isOn: isOn },
+    success: function (response) {
+      console.log('Light status updated successfully');
+      console.log(response);
+    },
+    error: function (error) {
+      console.error('Error updating light status:', error);
+    },
+  });
+}
+
+// Function to update light mode via API call
+function updateLightMode(mode) {
+  $.ajax({
+    url: 'https://simplecoop.swollenhippo.com/settings.php',
+    type: 'PUT',
+    data: { mode: mode },
+    success: function (response) {
+      console.log('Light mode updated successfully');
+      console.log(response);
+    },
+    error: function (error) {
+      console.error('Error updating light mode:', error);
+    },
+  });
+}
+
+
+// Food and Water Distribution Functions
+let foodPercentage = 100; // Initial food percentage
+
+function giveOutFoodWater() {
+  document.getElementById('foodWaterStatus').textContent = 'Food and water have been manually given out.';
+  increaseFoodPercentage(10); // Increase food percentage by 10%
+
+  updateFoodWaterStatus('manual');
+}
+
+function toggleFoodWaterAutomatic() {
+  const foodWaterStatusElement = document.getElementById('foodWaterStatus');
+  const foodWaterButtons = document.getElementById('foodWaterButtons');
+
+  if (foodWaterStatusElement.dataset.mode === 'automatic') {
+    foodWaterStatusElement.dataset.mode = 'manual';
+    foodWaterStatusElement.textContent = 'Switched to manual mode.';
+    foodWaterButtons.style.display = 'block';
+  } else {
+    foodWaterStatusElement.dataset.mode = 'automatic';
+    foodWaterStatusElement.textContent = 'Switched to automatic mode.';
+    foodWaterButtons.style.display = 'none';
+  }
+
+  updateFoodWaterStatus(foodWaterStatusElement.dataset.mode);
+}
+
+// Function to update food and water mode via API call
+function updateFoodWaterMode(mode) {
+  $.ajax({
+    url: 'https://simplecoop.swollenhippo.com/settings.php',
+    type: 'PUT',
+    data: { mode: mode },
+    success: function (response) {
+      console.log('Food and water mode updated successfully');
+      console.log(response);
+    },
+    error: function (error) {
+      console.error('Error updating food and water mode:', error);
+    },
+  });
+}
+
+// Function to update food and water status via API call
+function updateFoodWaterStatus(mode) {
+  $.ajax({
+    url: 'https://simplecoop.swollenhippo.com/settings.php',
+    type: 'PUT',
+    data: { mode: mode },
+    success: function (response) {
+      console.log('Food and water status updated successfully');
+      console.log(response);
+    },
+    error: function (error) {
+      console.error('Error updating food and water status:', error);
+    },
+  });
 }
   
-      // Food and Water Distribution Functions
-      let foodPercentage = 100; // Initial food percentage
+function updateFoodStatusBar() {
+  // Decrease food percentage by 0.01% every second
+  foodPercentage = Math.max(0, foodPercentage - 0.01);
+  const foodStatusBar = document.getElementById('foodStatusBar');
+  foodStatusBar.style.width = `${foodPercentage}%`;
+  foodStatusBar.textContent = `${foodPercentage.toFixed(2)}%`;
+}
 
-      function giveOutFoodWater() {
-        document.getElementById('foodWaterStatus').textContent = 'Food and water have been manually given out.';
-        increaseFoodPercentage(10); // Increase food percentage by 1%
-      }
+// Increase food percentage by a specified amount (in percentage)
+function increaseFoodPercentage(amount) {
+  foodPercentage = Math.min(100, foodPercentage + amount);
+  updateFoodStatusBar();
+}
   
-      function toggleFoodWaterAutomatic() {
-        const foodWaterStatusElement = document.getElementById('foodWaterStatus');
-        const foodWaterButtons = document.getElementById('foodWaterButtons');
+// Countdown Clock Function
+function updateCountdown() {
+  const countdownElement = document.getElementById('countdown');
+  const now = new Date();
+  const currentHour = now.getHours();
+  let nextDistributionTime;
+
+  if (currentHour < 7) {
+    nextDistributionTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 7, 0, 0);
+  } else if (currentHour < 12) {
+    nextDistributionTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0);
+  } else if (currentHour < 19) {
+    nextDistributionTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 19, 0, 0);
+  } else {
+    nextDistributionTime = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 7, 0, 0);
+  }
+
+  const timeDifference = nextDistributionTime - now;
+  const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+  const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+  countdownElement.textContent = `Next distribution in: ${hours}h ${minutes}m ${seconds}s`;
+}
   
-        if (foodWaterStatusElement.dataset.mode === 'automatic') {
-          foodWaterStatusElement.dataset.mode = 'manual';
-          foodWaterStatusElement.textContent = 'Switched to manual mode.';
-          foodWaterButtons.style.display = 'block';
-        } else {
-          foodWaterStatusElement.dataset.mode = 'automatic';
-          foodWaterStatusElement.textContent = 'Switched to automatic mode.';
-          foodWaterButtons.style.display = 'none';
-        }
-      }
-  
-      function updateFoodStatusBar() {
-        // Decrease food percentage by 0.01% every second
-        foodPercentage = Math.max(0, foodPercentage - 0.01);
-        const foodStatusBar = document.getElementById('foodStatusBar');
-        foodStatusBar.style.width = `${foodPercentage}%`;
-        foodStatusBar.textContent = `${foodPercentage.toFixed(2)}%`;
-      }
-  
-      // Increase food percentage by a specified amount (in percentage)
-      function increaseFoodPercentage(amount) {
-        foodPercentage = Math.min(100, foodPercentage + amount);
-        updateFoodStatusBar();
-      }
-  
-      // Countdown Clock Function
-      function updateCountdown() {
-        const countdownElement = document.getElementById('countdown');
-        const now = new Date();
-        const currentHour = now.getHours();
-        let nextDistributionTime;
-  
-        if (currentHour < 7) {
-          nextDistributionTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 7, 0, 0);
-        } else if (currentHour < 12) {
-          nextDistributionTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0);
-        } else if (currentHour < 19) {
-          nextDistributionTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 19, 0, 0);
-        } else {
-          nextDistributionTime = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 7, 0, 0);
-        }
-  
-        const timeDifference = nextDistributionTime - now;
-        const hours = Math.floor(timeDifference / (1000 * 60 * 60));
-        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-  
-        countdownElement.textContent = `Next distribution in: ${hours}h ${minutes}m ${seconds}s`;
-      }
-  
-      // Set the initial status based on the time for all devices
-      const doorStatusElement = document.getElementById('doorStatus');
-      const lightStatusElement = document.getElementById('lightStatus');
-      const foodWaterStatusElement = document.getElementById('foodWaterStatus');
-      const doorButtons = document.getElementById('doorButtons');
-      const lightButtons = document.getElementById('lightButtons');
-      const foodWaterButtons = document.getElementById('foodWaterButtons');
-  
-      doorStatusElement.dataset.mode = 'automatic';
-      lightStatusElement.dataset.mode = 'automatic';
-      foodWaterStatusElement.dataset.mode = 'automatic';
-  
-      doorButtons.style.display = 'none';
-      lightButtons.style.display = 'none';
-  
-      const currentHour = new Date().getHours();
-      const isDaytime = currentHour >= 6 && currentHour < 18;
-  
-      if (isDaytime) {
-        doorStatusElement.textContent = 'It\'s daytime, the door is open.';
-        lightStatusElement.textContent = 'It\'s daytime, the lights are off.';
-      } else {
-        doorStatusElement.textContent = 'It\'s nighttime, the door is closed.';
-        lightStatusElement.textContent = 'It\'s nighttime, the lights are on.';
-      }
-  
-      // Update the clock, countdown, and food status every second
-      setInterval(updateClock, 1000);
-      setInterval(updateCountdown, 1000);
-      setInterval(updateFoodStatusBar, 1000); // Update food status every second
-  
-      // Initial call to update the clock, countdown, and food status
-      updateClock();
-      updateCountdown();
-      updateFoodStatusBar();
-      
+// Set the initial status based on the time for all devices
+const doorStatusElement = document.getElementById('doorStatus');
+const lightStatusElement = document.getElementById('lightStatus');
+const foodWaterStatusElement = document.getElementById('foodWaterStatus');
+const doorButtons = document.getElementById('doorButtons');
+const lightButtons = document.getElementById('lightButtons');
+const foodWaterButtons = document.getElementById('foodWaterButtons');
+
+doorStatusElement.dataset.mode = 'automatic';
+lightStatusElement.dataset.mode = 'automatic';
+foodWaterStatusElement.dataset.mode = 'automatic';
+
+doorButtons.style.display = 'none';
+lightButtons.style.display = 'none';
+
+const currentHour = new Date().getHours();
+const isDaytime = currentHour >= 6 && currentHour < 18;
+
+if (isDaytime) {
+  doorStatusElement.textContent = 'It\'s daytime, the door is open.';
+  lightStatusElement.textContent = 'It\'s daytime, the lights are off.';
+} else {
+  doorStatusElement.textContent = 'It\'s nighttime, the door is closed.';
+  lightStatusElement.textContent = 'It\'s nighttime, the lights are on.';
+}
+
+// Update the clock, countdown, and food status every second
+setInterval(updateClock, 1000);
+setInterval(updateCountdown, 1000);
+setInterval(updateFoodStatusBar, 1000); // Update food status every second
+
+// Initial call to update the clock, countdown, and food status
+updateClock();
+updateCountdown();
+updateFoodStatusBar();
+
 
 // AC Control Functions
 
 // Function to get temperature from OpenWeatherMap API
 async function getTemperature() {
-  const apiUrl = 'your_temperature_api_url'; // replace with your actual temperature API endpoint
+  const apiKey = '434cfb936758e07ed174697f92432b11';
+  const city = 'cookeville';
+  const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
   try {
       const response = await fetch(apiUrl);
       const data = await response.json();
@@ -507,7 +669,7 @@ async function getTemperature() {
           turnOffHeater();
       }
   } catch (error) {
-      console.error('Error fetching temperature:', error);
+      console.error('Error fetching temperature data:', error);
   }
 }
 

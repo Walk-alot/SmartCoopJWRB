@@ -312,6 +312,50 @@ function updateClock() {
   clockElement.textContent = `Current Time: ${timeString} (${timeZoneString})`;
 }
 
+// Eggs
+
+function startEggCounter() {
+  var numChickens = document.getElementById('numChickens').value;
+  var eggsPerChickenPerDay = 1; // You can adjust this value based on your chickens' productivity
+  var daysToCollect = 7; // Adjust as needed
+  var intervalSeconds = 1; // Interval between updates in seconds
+
+  var totalSeconds = 0;
+
+  // Update the result every 'intervalSeconds' seconds
+  var intervalId = setInterval(function () {
+    totalSeconds += intervalSeconds;
+
+    var estimatedEggs = numChickens * eggsPerChickenPerDay * (totalSeconds / (1 * 60)); // Update based on time
+    document.getElementById('result').innerHTML =
+      "Estimated eggs ready to pick up in the next hour: " + Math.floor(estimatedEggs) + " eggs";
+
+    // Add API call logic to update egg count
+    updateEggCount(Math.floor(estimatedEggs));
+
+    // You can stop the counter after a certain duration, e.g., 60 seconds
+    if (totalSeconds >= 20) {
+      clearInterval(intervalId);
+    }
+  }, intervalSeconds * 1000);
+}
+
+// Function to update egg count via API call
+function updateEggCount(eggCount) {
+  $.ajax({
+    url: 'https://simplecoop.swollenhippo.com/eggs.php',
+    type: 'PUT',
+    data: { SessionID: sessionStorage.getItem('CoopSessionID'), eggCount: eggCount },
+    success: function (response) {
+      console.log('Egg count updated successfully');
+      console.log(response);
+    },
+    error: function (error) {
+      console.error('Error updating egg count:', error);
+    },
+  });
+}
+
 // Door Control Functions
 function openDoor() {
   document.getElementById('doorStatus').textContent = 'The door is manually opened.';

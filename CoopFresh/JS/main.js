@@ -1,21 +1,3 @@
-
-// API
-
-// Function to get a CoopID by making a POST request to coop.php
-async function getCoopID() {
-  const response = await fetch('https://simplecoop.swollenhippo.com/coop.php', {
-      method: 'POST'
-  });
-
-  const data = await response.json();
-  const coopID = data.CoopID;
-
-  return coopID;
-}
-// End API
-
-
-
 $('#btnToggleRegister').click(function(){
     $('#divLogin').slideUp()
     $('#divRegister').slideDown()
@@ -30,20 +12,6 @@ $('#btnToggleLogin').click(function(){
 $('#btnNavLogin').click(function(){
     $('#divLogin').slideToggle()
     $('#divRegister').hide()
-})
-
-$('#btnNavLogout').click(function(){
-    $('#btnMyAccountToggle').hide()
-    $('#btnNavLogout').hide()
-    $('#btnNavLogin').show()
-    $('#Dashboard').slideUp()
-    $('#divLogin').slideDown()
-    $('#DoorDash').hide()
-    $('#LightDash').hide()
-    $('#ACDash').hide()
-    $('#HomeDash').hide()
-    $('#FoodWaterDash').hide()
-    $('#weatherInfo').hide()
 })
 
 $('#btnHomeDash').click(function(){
@@ -86,6 +54,22 @@ $('#btnFoodWaterDash').click(function(){
     $('#HomeDash').hide()
 })
 
+// Check for session
+if(sessionStorage.getItem('CoopSessionID') != null){
+  $('#btnNavLogin').hide()
+    $('#Dashboard').slideDown()
+    $('#btnMyAccountToggle').show()
+    $('#btnNavLogout').show()
+    $('#weatherInfo').show()
+    $('#divLogin').hide()
+    $('#divRegister').hide()
+    $('#DoorDash').hide()
+    $('#LightDash').hide()
+    $('#ACDash').hide()
+    $('#HomeDash').hide()
+    $('#FoodWaterDash').hide()
+}
+
 
 //Login Card
 $('#btnLogin').click(function () {
@@ -112,16 +96,16 @@ $('#btnLogin').click(function () {
 
     if(blnError == false)
     {
-      $.post('https://simplecoop.swollenhippo.com/sessions.php', { Email: 'bburchfield2@tntech.edu', Password: 'Mickey2022!' }, function (sessionResult) {
+      $.post('https://simplecoop.swollenhippo.com/sessions.php', { Email: strUsername, Password: strPassword }, function (sessionResult) {
       console.log(sessionResult);
       sessionResult = JSON.parse(sessionResult);
-      if (sessionResult.Error) {
+      if (result.Error) {
         Swal.fire({
           icon: 'error',
-          html: sessionResult.Error,
+          html: result.Error,
         });
       } else {
-        sessionStorage.setItem('CoopID', sessionResult.CoopSessionID);
+        sessionStorage.setItem('CoopSessionID',result.CoopSessionID);
         $('#divLogin').slideUp()
         $('#Dashboard').slideDown()
         $('#btnMyAccountToggle').show()
@@ -220,7 +204,7 @@ $('#btnRegister').click(function(){
           html: coopResult.Error,
         });
       } else {
-        $.post('https://simplecoop.swollenhippo.com/users.php', { Email: 'bburchfield2@tntech.edu', Password: 'Mickey2022!', FirstName: 'Bennn', LastName: 'BURCHFIELD', CoopID: '65' }, function (result) {
+        $.post('https://simplecoop.swollenhippo.com/users.php', { Email: strRegEmail, Password: strRegPassword, FirstName: strRegFirstName, LastName: strRegLastName, CoopID: strRegCoopID}, function (result) {
           console.log(result);
           result = JSON.parse(result);
           if (result.Error) {
@@ -230,7 +214,7 @@ $('#btnRegister').click(function(){
               html: result.Error,
             });
           } else {
-            $.post('https://simplecoop.swollenhippo.com/sessions.php', { Email: 'bburchfield2@tntech.edu', Password: 'Mickey2022!' }, function (sessionResult) {
+            $.post('https://simplecoop.swollenhippo.com/sessions.php', { Email: strRegEmail, Password: strRegPassword}, function (sessionResult) {
               console.log(sessionResult);
               sessionResult = JSON.parse(sessionResult);
               if (sessionResult.Error) {
@@ -239,7 +223,7 @@ $('#btnRegister').click(function(){
                   html: sessionResult.Error,
                 });
               } else {
-                sessionStorage.setItem('CoopID', sessionResult.CoopID);
+                sessionStorage.setItem('CoopSessionID',result.CoopSessionID);
 
                 $('#divRegister').slideUp()
                 $('#Dashboard').slideDown()
@@ -260,6 +244,24 @@ $('#btnRegister').click(function(){
     });
     }           
 })
+
+$('#btnNavLogout').click(function(){
+  sessionStorage.removeItem('CoopSessionID')
+  $('#btnMyAccountToggle').hide()
+  $('#btnNavLogout').hide()
+  $('#btnNavLogin').show()
+  $('#Dashboard').slideUp()
+  $('#divLogin').slideDown()
+  $('#DoorDash').hide()
+  $('#LightDash').hide()
+  $('#ACDash').hide()
+  $('#HomeDash').hide()
+  $('#FoodWaterDash').hide()
+  $('#weatherInfo').hide()
+})
+
+
+
 
 // Dashboards
 
@@ -514,6 +516,10 @@ function toggleHeaterAutomatic() {
   // Add logic to toggle automatic mode for the heater
   const heaterStatus = document.getElementById('HeaterStatus');
   heaterStatus.value = heaterStatus.value === 'Automatic Mode' ? 'Manual Mode' : 'Automatic Mode';
+  $('#btnHeaterON').slideToggle()
+  $('#btnHeaterOFF').slideToggle()
+
+  updateHeaterSettings(heaterStatus.value);
 }
 
 // Function to toggle the fan
@@ -521,18 +527,26 @@ function toggleFanAutomatic() {
   // Add logic to toggle automatic mode for the fan
   const fanStatus = document.getElementById('FanStatus');
   fanStatus.value = fanStatus.value === 'Automatic Mode' ? 'Manual Mode' : 'Automatic Mode';
+  $('#btnFanON').slideToggle()
+  $('#btnFanOFF').slideToggle()
+
+  updateFanSettings(fanStatus.value);
 }
 
 // Function to turn on the heater
 function turnOnHeater() {
   document.getElementById('HeaterStatus').value = 'Heater is On';
   // Add logic to turn on the heater (e.g., send a signal to a hardware device)
+
+  updateHeaterStatus(true);
 }
 
 // Function to turn off the heater
 function turnOffHeater() {
   document.getElementById('HeaterStatus').value = 'Heater is Off';
   // Add logic to turn off the heater (e.g., send a signal to a hardware device)
+
+  updateHeaterStatus(false);
 }
 
 // Function to toggle the fan
@@ -549,12 +563,80 @@ function toggleFan() {
 function turnOnFan() {
   document.getElementById('FanStatus').value = 'Fan is On';
   // Add logic to turn on the fan (e.g., send a signal to a hardware device)
+
+  updateFanStatus(true);
 }
 
 // Function to turn off the fan
 function turnOffFan() {
   document.getElementById('FanStatus').value = 'Fan is Off';
   // Add logic to turn off the fan (e.g., send a signal to a hardware device)
+
+  updateFanStatus(false);
+}
+
+// API call to update heater status
+function updateHeaterStatus(isOn) {
+  $.ajax({
+    url: 'https://simplecoop.swollenhippo.com/settings.php',
+    type: 'PUT',
+    data: { SessionID: sessionStorage.getItem('CoopSessionID'), settings: 'heater', value: isOn ? 'On' : 'Off' },
+    success: function (response) {
+      console.log('Heater status updated successfully');
+      console.log(response);
+    },
+    error: function (error) {
+      console.error('Error updating heater status:', error);
+    },
+  });
+}
+
+// API call to update fan status
+function updateFanStatus(isOn) {
+  $.ajax({
+    url: 'https://simplecoop.swollenhippo.com/settings.php',
+    type: 'PUT',
+    data: { SessionID: sessionStorage.getItem('CoopSessionID'), settings: 'fan', value: isOn ? 'On' : 'Off' },
+    success: function (response) {
+      console.log('Fan status updated successfully');
+      console.log(response);
+    },
+    error: function (error) {
+      console.error('Error updating fan status:', error);
+    },
+  });
+}
+
+// API call to update heater settings
+function updateHeaterSettings(mode) {
+  $.ajax({
+    url: 'https://simplecoop.swollenhippo.com/settings.php',
+    type: 'PUT',
+    data: { SessionID: sessionStorage.getItem('CoopSessionID'), settings: 'heater-mode', value: mode },
+    success: function (response) {
+      console.log('Heater settings updated successfully');
+      console.log(response);
+    },
+    error: function (error) {
+      console.error('Error updating heater settings:', error);
+    },
+  });
+}
+
+// API call to update fan settings
+function updateFanSettings(mode) {
+  $.ajax({
+    url: 'https://simplecoop.swollenhippo.com/settings.php',
+    type: 'PUT',
+    data: { SessionID: sessionStorage.getItem('CoopSessionID'), settings: 'fan-mode', value: mode },
+    success: function (response) {
+      console.log('Fan settings updated successfully');
+      console.log(response);
+    },
+    error: function (error) {
+      console.error('Error updating fan settings:', error);
+    },
+  });
 }
 
 // Fetch temperature on page load
